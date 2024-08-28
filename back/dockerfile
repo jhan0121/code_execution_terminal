@@ -1,5 +1,6 @@
 # Use an official Ubuntu as a parent image
 FROM ubuntu:20.04
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Set environment variables
 ENV LANG=C.UTF-8 \
