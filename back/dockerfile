@@ -15,12 +15,13 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     curl \
     vim \
-    git \
     less \
     locales \
     man \
     htop \
     tmux \
+    openjdk-11-jdk \
+    g++ \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Generate locales
