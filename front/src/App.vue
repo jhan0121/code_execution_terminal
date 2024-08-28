@@ -47,23 +47,6 @@ export default {
         }
         return
       }
-
-      axios.get(path, {headers: {'Content-Type':'application/x-www-form-urlencoded;charset=utf-8'}})
-        .then((res) => {
-          this.$refs.leftMenu.selected = path
-          if (path.endsWith('.template')) {
-            this.$refs.terminal.setEditorValue(res && res.data && res.data.toString())
-
-            if (source === "Hello, World!.template") {
-              this.$refs.terminal.openLastSource()
-            }
-          } else {
-            this.contents = res.data
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
     },
     onTerminalCount: function(count) {
       this.termCount = count
@@ -88,10 +71,6 @@ export default {
           
           if (res.data) {
             this.menu = res.data
-            if (!window.location.href.endsWith('.template') && 
-                !window.location.href.split('/').pop().startsWith('source:')) {
-              this.showContents(path + 'Hello, World!.template')
-            }
           }
         })
         .catch((err) => {

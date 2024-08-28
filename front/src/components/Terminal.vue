@@ -51,74 +51,6 @@
           </template>
         </v-tooltip>
       </v-app-bar>
-      <!-- <v-slide-group
-        v-model="fileTabIndex"
-        id="file-tabs"
-        mandatory
-        show-arrows
-        @change="onChangeFileTab"
-      > -->
-        <!-- <v-slide-item
-          v-for="(item, index) in fileTabs"
-          :key="index"
-          v-slot="{ active, toggle }"
-          height="24px"
-        >
-          <v-btn
-            class="text-truncate"
-            text
-            tile
-            small
-            :input-value="active"
-            active-class="indigo darken-4 white--text"
-            depressed
-            @click="toggle"
-            @contextmenu="toggle(), tabContaxMenu($event)"
-            style="text-transform: none !important;"
-          >
-            <v-text-field
-              :disabled="!active"
-              :readonly="item.filename === defaultFilename"
-              :value="`${item.filename}`"
-              single-line
-              class='text-caption'
-              style='border-style:none;'
-              @change="renameTab"
-              @blur="renaming=false"
-              v-if="renaming && active && item.filename !==defaultFilename"
-              autofocus
-            ></v-text-field>
-            <span class="d-inline-block text-truncate"
-              style="max-width: 120px;"
-              v-on:dblclick="renaming=true"
-              v-else
-            >
-              {{languages[selectedLanguage] && `${item.filename}.${languages[selectedLanguage].ext}`}}
-            </span>
-
-            <v-spacer>
-            </v-spacer>
-            <v-btn icon text x-small>
-            <v-icon
-              color="pink lighten-4"
-              dense
-              v-text="'mdi-close'"
-              @click="closeTab"
-            ></v-icon>
-            </v-btn>
-          </v-btn>
-        </v-slide-item>
-        <div>
-          <v-tooltip bottom>
-            <span>{{$t('newTab')}}</span>
-            <template v-slot:activator="{ on, attrs }">
-            <v-btn small icon @click='newTab' v-bind="attrs" v-on="on">
-              <v-icon small>mdi-plus</v-icon>
-            </v-btn>
-            </template>
-          </v-tooltip>
-        </div>
-      </v-slide-group> -->
       <div id="monaco"></div>
     </div>
 
@@ -946,7 +878,7 @@ export default {
       this.selectedLanguage = language
       this.filename = this.defaultFilename
       this.befFileTab = this.defaultFilename
-      document.title = `RyuGod - ${language}`
+      document.title = `BlueCode - ${language}`
       document.querySelector('meta[name="description"]').setAttribute("content", `온라인 ${language} 실행 환경 (Online ${language} Test and Run with IDE)`);
       this.editor.setScrollLeft(0)
       this.editor.setScrollTop(0)
