@@ -23,6 +23,14 @@ npm run serve
 npm install
 ```
 
+컨테이너 생성을 위한 docker image build
+
+(이미지 태그는 반드시 ubuntu:bluecode로 설정해야 함.)
+```
+cd back
+docker build -t ubuntu:bluecode .
+```
+
 실행
 ```
 node app.js
