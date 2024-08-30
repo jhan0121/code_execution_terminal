@@ -91,7 +91,7 @@ const TerminalComponent = () => {
       if (data.indexOf(HEREDOC_BEGIN) !== -1) {
         if (regex.exec(data) === null) {
           setIsHereDoc(true);
-          term.write('uploadingFile...');
+          term.write('uploadingFile...\r\n');
         }
         return;
       }
