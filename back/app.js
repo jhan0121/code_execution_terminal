@@ -7,10 +7,6 @@ const crypto = require('crypto')
 const { spawn } = require("child_process")
 const http = require('http')
 const websocket = require('ws')
-const hljs = require('highlight.js')
-const urlencode = require('urlencode')
-const fs = require('fs')
-const { SIGTERM, SIGQUIT, SIGINT, SIGKILL } = require('constants')
 const app = express()
 app.disable('x-powered-by')
 const base_dir = '/home/bluecode'
@@ -58,7 +54,6 @@ let docker_seq = 0
 
 websocketServer.on('connection', (ws, req) => {
     docker_seq = docker_seq > 99999999 ? 0 : docker_seq+1
-    let logMessage = ''
     const docker_name = 'RS' + `0000000${docker_seq}`.slice(-8)
 
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
