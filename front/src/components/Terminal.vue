@@ -14,8 +14,7 @@
             <template v-for="(language, index) in Object.keys(languages)">
             <v-list-item
               @click="onChangeLanguage(language)"
-              :key="index"
-            >
+              :key="index">
               <v-list-item-icon>
                 <v-icon  :color="language === selectedLanguage ? 'error':'primary'">
                   {{languages[language].icon}}
@@ -200,8 +199,6 @@ export default {
     contents: "",
     languageIcon: 'mdi-bash',
     selectedLanguage: 'Bash',
-    QRCode: '',
-    sharedURL: '',
     options: {selectedLanguage: 'Bash', tabSize: 4, dark: true},
     languages: null,
     sharedHash: String,
@@ -442,23 +439,6 @@ export default {
         reader.readAsText(file)
       })
     },
-    dropHandler: function (ev) {
-      let i
-      ev.preventDefault()
-
-      if (ev.dataTransfer.items) {
-        for (i = 0; i < ev.dataTransfer.items.length; i++) {
-          if (ev.dataTransfer.items[i].kind === 'file') {
-            var file = ev.dataTransfer.items[i].getAsFile()
-            this.getFileContents(file)
-          }
-        }
-      } else {
-        for (i = 0; i < ev.dataTransfer.files.length; i++) {
-          this.getFileContents(ev.dataTransfer.files[i])
-        }
-      }
-    },
     dragOverHandler: function (ev) {
       ev.preventDefault()
     },
@@ -558,74 +538,6 @@ export default {
       }
       this.$refs[id].show(width)
     },
-    imshow: function(data) {
-      const split = data.split(':')
-      const filename = atob(split[0].split(';')[1])
-      const ext = filename?filename.toLowerCase().split('.').pop():'png'
-      const con_html = document.getElementById('con-html')
-
-      if(filename.startsWith('code|')) {
-        this.addTab(filename.split('|')[1], Buffer.from(decodeURI(split[1]), "base64").toString())
-        return
-      }
-
-      this.terminalTab = 'tab-1'
-
-      if (ext === 'html' || ext === 'php') {
-        con_html.innerHTML = "<iframe id='iframe-html' frameborder='0' width='100%' height='100%' style='background:white;overflow-y:scroll; overflow-x:hidden;'></iframe>"
-        const iframe = document.getElementById('iframe-html')
-        con_html.style.overflowY = 'hidden'
-        let src = Buffer.from(decodeURI(split[1]), "base64").toString()
-        if (!src.match(/html/i)) {
-          const style = "<style>" +
-"table { border-collapse: collapse; border-spacing: 0; border: 0;}" +
-"tr th {background: #e9efff; font-weight: bold;padding: 5px 20px;}" +
-"tr th span { padding-right: 20px;background-repeat: no-repeat;background-position: 100% 100%;}" +
-"tr {color: #555;}" +
-"tr td {text-align: center;padding: 5px 20px;}" +
-"tr, th, td {margin: 0;padding: 0;border: 1; border-color:#e5e5f5;font-size: 100%;font: inherit;vertical-align: baseline;outline: none;-webkit-font-smoothing: antialiased;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}" +
-"th:first-child, table td:first-child {border-left: 0;}" +
-"th:last-child,table td:last-child {border-right: 0;}" +
-"</style>"
-          src = `<html><head>${style}</head><body>${src}</body></html>`
-        }
-        iframe.srcdoc = src
-      } else if (ext === 'md') {
-        const src = Buffer.from(decodeURI(split[1]), "base64").toString()
-        this.renderMarkdown(src)
-      } else if (ext === 'png' || ext === 'jpg' || ext === 'jpeg' || ext === 'gif' || ext === 'svg') {
-        const terminal = document.getElementById('terminal')
-        const src = `data:image/${ ext === 'svg'?'svg+xml':ext};base64,${decodeURI(split[1])}`
-        const div = con_html.appendChild(document.createElement('div'))
-        const img = div.appendChild(document.createElement('img'))
-        img.style = `max-height:${(terminal.clientHeight === 0 ? con_html.clientHeight-20:terminal.clientHeight-20)}px`
-        img.type ="application/pdf"
-        img.src = src
-        const p = div.appendChild(document.createElement('p'))
-        p.style = "color:grey; margin:0 0 0 0px;"
-        p.appendChild(document.createTextNode(filename))
-        con_html.style.overflowY = 'auto'
-
-        window.setTimeout(() => {
-          if (con_html.scrollHeight > 0)
-            con_html.scrollTop = con_html.scrollHeight - con_html.clientHeight
-        }, 100)
-      } else if (ext === 'pdf') {
-        const src = `data:application/pdf;base64,${decodeURI(split[1])}`
-
-        con_html.innerHTML = `<embed src="${src}" type="application/pdf" style="width:100%;height:100%;"></embeded>`
-        con_html.style.overflowY = 'hidden'
-      } else {
-        const div = con_html.appendChild(document.createElement('div'))
-        const link = document.createElement('a')
-        link.download = filename
-        link.text = `${filename} ${this.$t('download')}`
-        link.href = `data:;base64,${decodeURI(split[1])}`
-        div.appendChild(link)
-        con_html.style.overflowY = 'auto'
-      }
-      this.ws.send('1\n')
-    },
     decoration: function(data) {
       const errorRegEx = this.languages[this.selectedLanguage].errorRegEx
       if (!errorRegEx)
@@ -711,7 +623,6 @@ export default {
           if (data.indexOf(BEL) !== -1) {
             isContImage = false
             const last = imgData.toString().split(BEL)
-            vm.imshow(last[0])
             imgData = ''
             if (last[1]) {
               vm.termStr = last[1]
@@ -731,8 +642,7 @@ export default {
           if (data.indexOf(BEL) === -1) {
             imgData = data
             isContImage = true
-          } else
-            vm.imshow(data)
+          }
           return
         }
 
@@ -772,6 +682,7 @@ export default {
       this.connected = false
     },
     executeCheck: function(command) {
+      console.log("command: " + command)
       if (command) {
         this.execute(this, command)
       }
@@ -791,12 +702,17 @@ export default {
       this.decorations = []
       this.befDecorations = this.editor.deltaDecorations(this.befDecorations, [])
 
+      console.log("execute_command: " + command)
+
       if (!this.connected) {
         this.connect(() => {this.execute(isAll, command)})
         return
       }
       const selected = this.editor.getSelection()
       const selectedText = command?command:this.editor.getModel().getValueInRange(selected)
+
+      console.log("selected: " + selected)
+      console.log("selectedText: " + selectedText)
 
       this.terminalTab = 'tab-0'
       if (!command) {
