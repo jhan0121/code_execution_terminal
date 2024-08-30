@@ -9,10 +9,10 @@ const TerminalComponent = () => {
   const [term, setTerm] = useState(null);
   const [ws, setWs] = useState(null);
   const [connected, setConnected] = useState(false);
-  const wsRef = useRef(null); // WebSocket 객체를 useRef로 관리
-  const connectedRef = useRef(false); // 연결 상태를 useRef로 관리
+  const wsRef = useRef(null);
+  const connectedRef = useRef(false);
   const [text, setText] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState("Python3");
+  const [selectedLanguage, setSelectedLanguage] = useState("Python3"); // languages.js에 존재하는 언어로 설정하면 됨(key에 해당하는 String: ex. Bash, Python3, java, ...)
   const [args, setArgs] = useState('');
   const [termStr, setTermStr] = useState("");
   const [count, setCount] = useState(null);
@@ -37,7 +37,7 @@ const TerminalComponent = () => {
         console.log("data: " + data.toString());
         console.log("input connected: " + connectedRef.current.toString());
   
-        if (connectedRef.current && wsRef.current) { // useRef를 사용하여 연결 상태 및 WebSocket 확인
+        if (connectedRef.current && wsRef.current) {
           wsRef.current.send('1' + data);
         } else {
           console.warn("WebSocket is not connected or initialized.");
@@ -64,8 +64,8 @@ const TerminalComponent = () => {
     console.log(socket !== null)
     socket.onopen = () => {
       term.write("Connected.\r\nPlease wait...\r\n");
-      wsRef.current = socket; // useRef로 WebSocket 객체를 관리
-      connectedRef.current = true; // useRef로 연결 상태를 업데이트
+      wsRef.current = socket; 
+      connectedRef.current = true; 
 
       console.log("init (after setting connected): " + connectedRef.current.toString());
 
