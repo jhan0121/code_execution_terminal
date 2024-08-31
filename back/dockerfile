@@ -41,11 +41,5 @@ USER bluecode
 # Set the shell to bash
 SHELL ["/bin/bash", "-c"]
 
-# Pre-install some commonly used Python packages (optional)
-RUN pip3 install --user \
-    numpy \
-    requests \
-    flask
-
 # Define the default command to start the shell
 CMD ["/bin/bash"]
