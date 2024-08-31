@@ -1,0 +1,22 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "code_execution_terminal_server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhan0121/code_execution_terminal.git"
+  },
+  "keywords": [
+    "web_terminal"
+  ],
+  "author": "jhan0121",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jhan0121/code_execution_terminal/issues"
+  },
+  "homepage": "https://github.com/jhan0121/code_execution_terminal#readme"
+}
