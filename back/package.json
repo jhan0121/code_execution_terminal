@@ -18,5 +18,11 @@
   "bugs": {
     "url": "https://github.com/jhan0121/code_execution_terminal/issues"
   },
-  "homepage": "https://github.com/jhan0121/code_execution_terminal#readme"
+  "homepage": "https://github.com/jhan0121/code_execution_terminal#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "node-pty": "^1.0.0",
+    "serve-index": "^1.9.1",
+    "ws": "^8.18.0"
+  }
 }
